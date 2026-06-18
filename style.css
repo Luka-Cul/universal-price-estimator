@@ -1,0 +1,19 @@
+body {
+  font-family: Arial, sans-serif;
+  padding: 40px;
+}
+
+#app {
+  margin-top: 20px;
+}
+
+.field {
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+h3 {
+  margin-bottom: 10px;
+}
