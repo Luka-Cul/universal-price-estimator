@@ -1,12 +1,11 @@
-const app = document.getElementById("app");
+const state = {};
+
+function updateState(fieldKey, value) {
+  state[fieldKey] = value;
+  calculatePrice();
+}
+
 let totalPrice = 0;
-
-app.innerHTML = `
-    <h2>${config.title}</h2>
-    <div id="form"></div>
-    <h2 id="price">Total: €0</h2>
-`;
-
 
 function updatePriceDisplay() {
   document.getElementById("price").innerText =
@@ -14,75 +13,52 @@ function updatePriceDisplay() {
 }
 
 function calculatePrice() {
-    let total = 0;
+  let total = 0;
 
-    //radio buttons
-    const radios = document.querySelectorAll("input[type='radio']:checked");
+  config.fields.forEach(field => {
 
-    radios.forEach(radio => {
-        total += Number(radio.dataset.price || 0);
-    });
+    const value = state[field.key];
 
-    //checkboxes
-      const checkboxes = document.querySelectorAll("input[type='checkbox']:checked");
+    if (!value) return;
 
-    checkboxes.forEach(box => {
-        total += Number(box.dataset.price || 0);
-    });
-
-    //slider
-    const slider = document.querySelector("input[type='range']");
-
-    if (slider) {
-        const pages = Number(slider.value);
-        const pricePerPage = Number(slider.dataset.priceperpage);
-
-        total += pages * pricePerPage;
+    // RADIO
+    if (field.type === "radio") {
+      const option = field.options.find(o => o.value === value);
+      if (option) total += option.price;
     }
-    totalPrice = total;
 
-    updatePriceDisplay();
-}
+    // CHECKBOX
+    if (field.type === "checkbox") {
+      value.forEach(v => {
+        const option = field.options.find(o => o.label === v);
+        if (option) total += option.price;
+      });
+    }
 
-function attachEvents() {
-  document.addEventListener("input", (e) => {
-    
-    calculatePrice();
-
-    if (e.target.type === "range") {
-        const id = e.target.id;
-        const display = document.getElementById(id + "-value");
-        if (display) display.innerText = e.target.value;
+    // SLIDER
+    if (field.type === "slider") {
+      const num = Number(value);
+      total += num * (field.unitPrice || 0);
     }
   });
+
+  totalPrice = total;
+  updatePriceDisplay();
 }
 
-function renderRadio(fieldKey, field) {
-    let html = `<div class="field"> <h3>${field.label}</h3>`;
-    
-    field.options.forEach((option) => {
-        html += `
-            <label>
-            <input type="radio" name="${fieldKey}" value="${option.value}" data-price="${option.price}">
-            ${option.label} (+${option.price}€)
-            </label><br>
-            `;
-    });
-
-    html += `</div>`;
-    return html;
-}
-
-function renderCheckbox(fieldKey, field) {
-    let html = `
-        <div class="field">
-        <h3>${field.label}</h3>
-        `;
+//radio buttons
+function renderRadio(field) {
+    let html = `<div class="field"><h3>${field.label}</h3>`;
 
     field.options.forEach(option => {
-    html += `
+        html += `
         <label>
-        <input type="checkbox" value="${option.label}" data-price="${option.price}">
+        <input type="radio"
+            name="${field.key}"
+            value="${option.value}"
+            data-price="${option.price}"
+            onchange="updateState('${field.key}', this.value)"
+        >
         ${option.label} (+${option.price}€)
         </label><br>
         `;
@@ -92,46 +68,104 @@ function renderCheckbox(fieldKey, field) {
     return html;
 }
 
-function renderSlider(fieldKey, field) {
+function handleCheckbox(fieldKey, el) {
+    if (!state[fieldKey]) {
+        state[fieldKey] = [];
+    }
+
+    if (el.checked) {
+        state[fieldKey].push(el.value);
+    } 
+    else {
+        state[fieldKey] = state[fieldKey].filter(v => v !== el.value);
+    }
+
+    calculatePrice();
+}
+
+//checkbox fileds
+function renderCheckbox(field) {
+    let html = `<div class="field"><h3>${field.label}</h3>`;
+
+    field.options.forEach(option => {
+        html += `
+        <label>
+        <input type="checkbox"
+            value="${option.label}"
+            data-price="${option.price}"
+            onchange="handleCheckbox('${field.key}', this)"
+        >
+        ${option.label} (+${option.price}€)
+        </label><br>
+        `;
+    });
+
+    html += `</div>`;
+    return html;
+}
+
+//Slider field
+function renderSlider(field) {
     return `
         <div class="field">
+
         <h3>${field.label}</h3>
-        
+
         <input type="range"
             min="${field.min}"
             max="${field.max}"
             value="${field.min}"
-            data-priceperpage="${field.pricePerPage}"
-            id="${fieldKey}"
+            data-priceperpage="${field.unitPrice}"
+            id="${field.key}"
+            oninput="updateState('${field.key}', this.value)"
         >
-        
-        <span id="${fieldKey}-value">${field.min}</span>
+
+        <span id="${field.key}-value">${field.min}</span>
+
         </div>
-        `;
+    `;
+}
+
+function shouldShowField(field) {
+
+  if (!field.showWhen) {
+    return true;
+  }
+
+  const selected = document.querySelector(
+    `input[name="${field.showWhen.field}"]:checked`
+  );
+
+  if (!selected) {
+    return false;
+  }
+
+  return selected.value === field.showWhen.value;
 }
 
 function renderForm() {
     let html = "";
-    for (let key in config) {
-        if (key === "title" || key === "currency") continue;
 
-        const field = config[key];
-
+    config.fields.forEach((field) => {
         if (field.type === "radio") {
-            html += renderRadio(key, field);
+            html += renderRadio(field);
         }
 
         if (field.type === "checkbox") {
-            html += renderCheckbox(key, field);
+            html += renderCheckbox(field);
         }
 
         if (field.type === "slider") {
-            html += renderSlider(key, field);
+            html += renderSlider(field);
         }
-    }
-    app.innerHTML += html;
+    });
+
+    document.getElementById("form").innerHTML = html;
 }
 
-renderForm();
-attachEvents();
-calculatePrice();
+function init() {
+  renderForm();
+  calculatePrice();
+}
+
+init();

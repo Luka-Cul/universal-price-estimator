@@ -1,18 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Price Estimator</title>
-    <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Price Estimator</title>
+
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-    <div id="app"></div>
 
-    <script src="config.js"></script>
-    <script src="app.js"></script>
+  <div class="container">
+
+    <header class="header">
+      <h1>Instant Website Estimate</h1>
+      <p>Build your website and get an instant price in seconds.</p>
+    </header>
+
+    <div id="form"></div>
+
+    <div class="price-box">
+      <h2 id="price">Total: €0</h2>
+      <p>No hidden costs • Instant calculation</p>
+    </div>
+
+  </div>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+
 </body>
-
 </html>

@@ -1,43 +1,42 @@
 const config = {
-  title: "Website Price Estimator",
-
+  title: "Service Estimator",
   currency: "€",
 
-  websiteType: {
-    label: "What type of website do you need?",
+  fields: [
+    {
+      key: "serviceType",
+      label: "What do you need?",
 
-    type: "radio",
+      type: "radio",
 
-    options: [
-      { label: "Landing Page", value: "landing", price: 150 },
-      { label: "Business Website", value: "business", price: 600 },
-      { label: "Ecommerce", value: "ecommerce", price: 1200 }
-    ]
-  }
-};
+      options: [
+        { label: "Basic Service", value: "basic", price: 300 },
+        { label: "Standard Service", value: "standard", price: 600 },
+        { label: "Premium Service", value: "premium", price: 1200 }
+      ]
+    },
 
-config.pages = {
-  label: "How many pages do you need?",
+    {
+      key: "quantity",
+      label: "How many units?",
 
-  type: "slider",
+      type: "slider",
 
-  min: 1,
-  max: 20,
+      min: 1,
+      max: 20,
+      unitPrice: 50
+    },
 
-  pricePerPage: 50
-};
+    {
+      key: "extras",
+      label: "Extra options",
 
-config.features = {
-  label: "Extra features",
+      type: "checkbox",
 
-  type: "checkbox",
-
-  options: [
-    { label: "Blog", price: 150 },
-    { label: "Multilingual", price: 300 },
-    { label: "Booking System", price: 500 },
-    { label: "Animations", price: 200 }
+      options: [
+        { label: "Fast delivery", price: 100 },
+        { label: "Extra revisions", price: 80 }
+      ]
+    }
   ]
 };
-
-console.log(config);
