@@ -15,6 +15,7 @@ body {
   box-shadow: 0 10px 30px rgba(0,0,0,0.08);
 }
 
+/* HEADER */
 .header h1 {
   margin: 0;
   font-size: 28px;
@@ -25,6 +26,7 @@ body {
   color: #666;
 }
 
+/* FIELDS */
 .field {
   margin-top: 18px;
   padding: 16px;
@@ -38,6 +40,11 @@ body {
   font-size: 16px;
 }
 
+.field-title {
+  margin-bottom: 10px;
+}
+
+/* INPUTS */
 label {
   display: block;
   margin: 6px 0;
@@ -48,22 +55,41 @@ input[type="range"] {
   width: 100%;
 }
 
+/* PRICE BOX */
 .price-box {
   margin-top: 25px;
   padding: 20px;
-  background: #111;
-  color: white;
+  background: linear-gradient(135deg, #f0f7ff 0%, #f5f9ff 100%);
+  color: #111;
   border-radius: 12px;
   text-align: center;
+  border: 2px solid #e0eaf5;
+
+  position: sticky;
+  top: 20px;
+  z-index: 10;
 }
 
-.price-box h2 {
+.price-title {
   margin: 0;
   font-size: 26px;
+  color: #0066cc;
 }
 
-.price-box p {
-  margin: 6px 0 0;
-  font-size: 13px;
-  opacity: 0.8;
+/* SUMMARY TEXT */
+#summary {
+  margin-top: 12px;
+  font-size: 14px;
+  color: #333;
+  text-align: left;
+}
+
+/* OPTIONAL CARD STYLE */
+.card {
+  background: #ffffff;
+  color: #111;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 15px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
 }

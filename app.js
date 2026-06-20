@@ -1,5 +1,10 @@
 const state = {};
 
+let quote = {
+  items: [],
+  total: 0
+};
+
 function updateState(fieldKey, value) {
   state[fieldKey] = value;
   calculatePrice();
@@ -8,47 +13,61 @@ function updateState(fieldKey, value) {
 let totalPrice = 0;
 
 function updatePriceDisplay() {
-  document.getElementById("price").innerText =
-    `Total: ${config.currency}${totalPrice}`;
+    document.getElementById("price").innerText = `Total: ${config.currency}${totalPrice}`;
 }
 
 function calculatePrice() {
-  let total = 0;
+    let total = 0;
+    quote.items = [];
 
-  config.fields.forEach(field => {
+    config.fields.forEach(field => {
 
-    const value = state[field.key];
+        const value = state[field.key];
 
-    if (!value) return;
+        if (!value) return;
 
-    // RADIO
-    if (field.type === "radio") {
-      const option = field.options.find(o => o.value === value);
-      if (option) total += option.price;
-    }
+        // RADIO
+        if (field.type === "radio") {
+            const option = field.options.find(o => o.value === value);
+            if (option) {
 
-    // CHECKBOX
-    if (field.type === "checkbox") {
-      value.forEach(v => {
-        const option = field.options.find(o => o.label === v);
-        if (option) total += option.price;
-      });
-    }
+                total += option.price;
 
-    // SLIDER
-    if (field.type === "slider") {
-      const num = Number(value);
-      total += num * (field.unitPrice || 0);
-    }
-  });
+                quote.items.push({
+                    label: field.label,
+                    value: option.label,
+                    price: option.price
+                });
 
-  totalPrice = total;
-  updatePriceDisplay();
+            }
+        }
+
+        // CHECKBOX
+        if (field.type === "checkbox") {
+            value.forEach(v => {
+                const option = field.options.find(o => o.label === v);
+                if (option) total += option.price;
+            });
+        }
+
+        // SLIDER
+        if (field.type === "slider") {
+            const num = Number(value);
+            total += num * (field.unitPrice || 0);
+        }
+    });
+
+    totalPrice = total;
+    updatePriceDisplay();
+    updateSummary();
 }
 
 //radio buttons
 function renderRadio(field) {
-    let html = `<div class="field"><h3>${field.label}</h3>`;
+    let html = `
+        <div class="field card">
+        <h3 class="field-title">${field.label}</h3>
+    `;
 
     field.options.forEach(option => {
         html += `
@@ -85,7 +104,10 @@ function handleCheckbox(fieldKey, el) {
 
 //checkbox fileds
 function renderCheckbox(field) {
-    let html = `<div class="field"><h3>${field.label}</h3>`;
+    let html = `
+        <div class="field card">
+        <h3 class="field-title">${field.label}</h3>
+    `;
 
     field.options.forEach(option => {
         html += `
@@ -107,9 +129,9 @@ function renderCheckbox(field) {
 //Slider field
 function renderSlider(field) {
     return `
-        <div class="field">
-
-        <h3>${field.label}</h3>
+        <div class="field card">
+        
+        <h3 class="field-title">${field.label}</h3>
 
         <input type="range"
             min="${field.min}"
@@ -161,6 +183,47 @@ function renderForm() {
     });
 
     document.getElementById("form").innerHTML = html;
+}
+
+function updateSummary() {
+    let html = "";
+
+    config.fields.forEach(field => {
+        const value = state[field.key];
+
+        if (!value) return;
+
+        // RADIO
+        if (field.type === "radio") {
+            const option = field.options.find(o => o.value === value);
+            if (option) {
+                html += `<p><strong>${field.label}:</strong> ${option.label} — €${option.price}</p>`;
+            }
+        }
+
+        // CHECKBOX
+        if (field.type === "checkbox") {
+            let items = [];
+
+            value.forEach(v => {
+                const option = field.options.find(o => o.label === v);
+                if (option) {
+                    items.push(`- ${option.label} (€${option.price})`);
+                }
+            });
+
+            if (items.length) {
+                html += `<p><strong>${field.label}:</strong><br>${items.join("<br>")}</p>`;
+            }
+        }
+
+        // SLIDER
+        if (field.type === "slider") {
+            html += `<p><strong>${field.label}:</strong> ${value}</p>`;
+        }
+    });
+
+    document.getElementById("summary").innerHTML = html;
 }
 
 function init() {
