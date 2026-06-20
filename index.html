@@ -1,35 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Price Estimator</title>
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Price Estimator</title>
 
-  <link rel="stylesheet" href="style.css" />
-</head>
+    <link rel="stylesheet" href="style.css" />
+    </head>
 
-<body>
+    <body>
 
-  <div class="container">
+        <div class="container">
 
-    <header class="header">
-      <h1>Instant Website Estimate</h1>
-      <p>Build your website and get an instant price in seconds.</p>
-    </header>
+            <header class="header">
+            <h1>Instant Website Estimate</h1>
+            <p>Build your website and get an instant price in seconds.</p>
+            </header>
 
-    <div id="form"></div>
+            <div id="form"></div>
 
-    <div class="price-box card sticky">
-        <h2 class="price-title" id="price">Total: €0</h2>
-        <div id="summary"></div>
 
-        <button onclick="copyQuote()">Copy Quote</button>
-    </div>
+            <div class="price-box card sticky">
 
-  </div>
+                <h2 class="price-title" id="price">Total: €0</h2>
 
-  <script src="config.js"></script>
-  <script src="app.js"></script>
+                <div id="summary"></div>
 
-</body>
+                <button onclick="copyQuote()" class="copy-btn">Copy Quote</button>
+
+                <div class="lead-form">
+
+                    <input
+                        type="text"
+                        id="leadName"
+                        placeholder="Your name"
+                    >
+
+                    <input
+                        type="email"
+                        id="leadEmail"
+                        placeholder="Your email"
+                    >
+
+                    <button onclick="sendQuote()" class="send-btn">Send Quote</button>
+                </div>
+
+            </div>
+
+        </div>
+
+        <script src="config.js"></script>
+        <script src="app.js"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+        <script>
+            emailjs.init("FHv5TOrho2FzjuHXQ");
+        </script>
+
+    </body>
 </html>

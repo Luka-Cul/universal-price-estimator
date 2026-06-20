@@ -1,5 +1,17 @@
 const state = {};
 
+let lead = {
+    customer: {
+        name: "",
+        email: ""
+    },
+    quote: {
+        items: [],
+        total: 0
+    },
+    submittedAt: null
+};
+
 let quote = {
   items: [],
   total: 0
@@ -276,6 +288,46 @@ function copyQuote() {
     .catch(err => {
         console.error("Copy failed:", err);
     });
+}
+
+function sendQuote() {
+
+    const name = document.getElementById("leadName").value;
+    const email = document.getElementById("leadEmail").value;
+
+    if (!name || !email) {
+        alert("Please enter your name and email");
+        return;
+    }
+
+    const total = totalPrice;
+
+    const templateParams = {
+        name: name,
+        email: email,
+        total: total
+    };
+
+    emailjs.send(
+        "service_z70fuz8",
+        "template_2dqpizi",
+        templateParams
+    )
+    .then(() => {
+        alert("Quote sent successfully!");
+    })
+    .catch((error) => {
+        console.error("EmailJS error:", error);
+        alert("Failed to send quote");
+    });
+
+    // optional: store locally
+    lead.customer.name = name;
+    lead.customer.email = email;
+    lead.quote.total = total;
+    lead.submittedAt = new Date().toISOString();
+
+    console.log("Lead:", lead);
 }
 
 init();
