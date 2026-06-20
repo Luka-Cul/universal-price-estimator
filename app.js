@@ -44,20 +44,43 @@ function calculatePrice() {
 
         // CHECKBOX
         if (field.type === "checkbox") {
+
             value.forEach(v => {
-                const option = field.options.find(o => o.label === v);
-                if (option) total += option.price;
+
+            const option = field.options.find(o => o.label === v);
+
+                if (option) {
+
+                    total += option.price;
+
+                    quote.items.push({
+                        label: field.label,
+                        value: option.label,
+                        price: option.price
+                    });
+                }
             });
         }
 
         // SLIDER
         if (field.type === "slider") {
+
             const num = Number(value);
-            total += num * (field.unitPrice || 0);
+
+            const price = num * (field.unitPrice || 0);
+
+            total += price;
+
+            quote.items.push({
+                label: field.label,
+                value: num,
+                price: price
+            });
         }
     });
 
     totalPrice = total;
+    quote.total = total;
     updatePriceDisplay();
     updateSummary();
 }
@@ -229,6 +252,30 @@ function updateSummary() {
 function init() {
   renderForm();
   calculatePrice();
+}
+
+function getQuoteText() {
+    let text = "QUOTE SUMMARY\n\n";
+
+    quote.items.forEach(item => {
+        text += `${item.label}: ${item.value} (€${item.price})\n`;
+    });
+
+    text += `\nTOTAL: €${quote.total}`;
+
+    return text;
+}
+
+function copyQuote() {
+    const text = getQuoteText();
+
+    navigator.clipboard.writeText(text)
+    .then(() => {
+        alert("Quote copied to clipboard!");
+    })
+    .catch(err => {
+        console.error("Copy failed:", err);
+    });
 }
 
 init();
