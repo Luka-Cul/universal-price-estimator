@@ -290,70 +290,109 @@ function copyQuote() {
     });
 }
 
+function buildQuoteText() {
+    let text = "QUOTE SUMMARY\n\n";
+
+    config.fields.forEach(field => {
+        const value = state[field.key];
+        if (!value) return;
+
+        // RADIO
+        if (field.type === "radio") {
+            const option = field.options.find(o => o.value === value);
+            if (option) {
+                text += `${field.label}: ${option.label}\n`;
+            }
+        }
+
+        // CHECKBOX
+        if (field.type === "checkbox") {
+            text += `${field.label}:\n`;
+            value.forEach(v => {
+                const option = field.options.find(o => o.label === v);
+                if (option) {
+                    text += `  - ${option.label}\n`;
+                }
+            });
+            text += "\n";
+        }
+
+        // SLIDER
+        if (field.type === "slider") {
+            text += `${field.label}: ${value}\n`;
+        }
+    });
+
+    text += "\n--------------------\n";
+    text += `TOTAL: €${totalPrice}\n`;
+
+    return text;
+}
+
+function sendToSheet(name, email, total, summary) {
+  fetch("https://script.google.com/macros/s/AKfycbyZVKT7dori_mrrXoMbWAgFon1b_QZibrqFU98LMv5jASOq1hNKrvWwEH0j2ZRRNAxg/exec", {
+    method: "POST",
+    body: JSON.stringify({
+      name,
+      email,
+      total,
+      summary
+    })
+  })
+  .then(res => res.text())
+  .then(data => console.log("Sheet response:", data))
+  .catch(err => console.error("Sheet error:", err));
+}
+
 function sendQuote() {
 
-    const name = document.getElementById("leadName").value;
-    const email = document.getElementById("leadEmail").value;
+  const name = document.getElementById("leadName").value;
+  const email = document.getElementById("leadEmail").value;
 
-    if (!name || !email) {
-        alert("Please enter your name and email");
-        return;
-    }
+  if (!name || !email) {
+    alert("Please enter your name and email");
+    return;
+  }
 
-    const total = totalPrice;
-    const summary = document.getElementById("summary").innerText;
+  const btn = document.getElementById("sendBtn");
+  btn.disabled = true;
+  btn.innerText = "Sending...";
 
-    const templateParams = {
-        name: name,
-        email: email,
-        total: total,
-        summary: summary
-    };
+  const total = totalPrice;
+  const summary = buildQuoteText();
 
-    emailjs.send(
-        "service_z70fuz8",
-        "template_2dqpizi",
-        templateParams
-    )
-    .then(() => {
-        alert("Quote sent successfully!");
-    })
-    .catch((error) => {
-        console.error("EmailJS error:", error);
-        alert("Failed to send quote");
-    });
+  const templateParams = {
+    name,
+    email,
+    total,
+    summary
+  };
 
-    emailjs.send(
-        "service_z70fuz8",
-        "template_6mq0aj8",
-        templateParams
-    )
-    .then(() => {
-        console.log("Owner notification sent");
-    })
-        .catch((error) => {
-        console.error("Owner email error:", error);
-    });
+  Promise.all([
+    emailjs.send("service_z70fuz8", "template_2dqpizi", templateParams),
+    emailjs.send("service_z70fuz8", "template_6mq0aj8", templateParams)
+  ])
+  .then(() => {
 
-    fetch("https://script.google.com/macros/s/AKfycbyZVKT7dori_mrrXoMbWAgFon1b_QZibrqFU98LMv5jASOq1hNKrvWwEH0j2ZRRNAxg/exec", {
-        method: "POST",
-        body: JSON.stringify({
-            name: name,
-            email: email,
-            total: totalPrice,
-            summary: document.getElementById("summary").innerText
-        })
-    })
-    .then(() => console.log("Saved to sheet"))
-    .catch(err => console.error("Sheet error:", err));
+    //success UI
+    btn.disabled = false;
+    btn.innerText = "Send Quote";
 
-    // optional: store locally
-    lead.customer.name = name;
-    lead.customer.email = email;
-    lead.quote.total = total;
-    lead.submittedAt = new Date().toISOString();
+    document.getElementById("successMessage").style.display = "block";
 
-    console.log("Lead:", lead);
+    //send to Google Sheets (separate, non-blocking)
+    sendToSheet(name, email, total, summary);
+
+  })
+  .catch((error) => {
+
+    console.error(error);
+
+    btn.disabled = false;
+    btn.innerText = "Send Quote";
+
+    alert("Email sending failed. Please try again.");
+  });
 }
 
 init();

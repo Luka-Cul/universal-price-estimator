@@ -39,7 +39,19 @@
         <div class="lead-form">
           <input type="text"  id="leadName"  placeholder="Your name" />
           <input type="email" id="leadEmail" placeholder="Your email" />
-          <button onclick="sendQuote()" class="send-btn">Send quote →</button>
+          <button id="sendBtn" class="send-btn" onclick="sendQuote()">Send Quote</button>
+        </div>
+        <div id="successMessage" style="
+            display:none;
+            margin-top:12px;
+            padding:14px;
+            border-radius:10px;
+            background:#ecfdf5;
+            border:1px solid #10b981;
+            color:#065f46;
+            font-weight:500;
+            ">
+            ✅ Quote sent successfully! Check your email.
         </div>
       </div>
 
