@@ -174,7 +174,7 @@ function renderSlider(field) {
             value="${field.min}"
             data-priceperpage="${field.unitPrice}"
             id="${field.key}"
-            oninput="updateState('${field.key}', this.value)"
+            oninput="updateState('${field.key}', this.value); document.getElementById('${field.key}-value').innerText = this.value"
         >
 
         <span id="${field.key}-value">${field.min}</span>
@@ -345,7 +345,7 @@ function sendToSheet(name, email, total, summary) {
 }
 
 function sendQuote() {
-
+  document.getElementById("successMessage").style.display = "none";
   const name = document.getElementById("leadName").value;
   const email = document.getElementById("leadEmail").value;
 
