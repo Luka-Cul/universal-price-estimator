@@ -301,11 +301,13 @@ function sendQuote() {
     }
 
     const total = totalPrice;
+    const summary = document.getElementById("summary").innerText;
 
     const templateParams = {
         name: name,
         email: email,
-        total: total
+        total: total,
+        summary: summary
     };
 
     emailjs.send(
@@ -320,6 +322,30 @@ function sendQuote() {
         console.error("EmailJS error:", error);
         alert("Failed to send quote");
     });
+
+    emailjs.send(
+        "service_z70fuz8",
+        "template_6mq0aj8",
+        templateParams
+    )
+    .then(() => {
+        console.log("Owner notification sent");
+    })
+        .catch((error) => {
+        console.error("Owner email error:", error);
+    });
+
+    fetch("https://script.google.com/macros/s/AKfycbyZVKT7dori_mrrXoMbWAgFon1b_QZibrqFU98LMv5jASOq1hNKrvWwEH0j2ZRRNAxg/exec", {
+        method: "POST",
+        body: JSON.stringify({
+            name: name,
+            email: email,
+            total: totalPrice,
+            summary: document.getElementById("summary").innerText
+        })
+    })
+    .then(() => console.log("Saved to sheet"))
+    .catch(err => console.error("Sheet error:", err));
 
     // optional: store locally
     lead.customer.name = name;
