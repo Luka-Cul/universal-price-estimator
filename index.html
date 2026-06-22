@@ -1,62 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Price Estimator</title>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Price Estimator</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
 
-    <link rel="stylesheet" href="style.css" />
-    </head>
+<body>
 
-    <body>
+  <div class="container">
 
-        <div class="container">
+    <header class="header">
+      <div class="header-left">
+        <h1>Instant Website <span>Estimate</span></h1>
+        <p>Configure your project and get a live price in seconds.</p>
+      </div>
+      <div class="header-right">
+        <div class="header-badge">Live pricing</div>
+        <div class="footer-note">Prices are estimates and may vary based on project requirements.</div>
+      </div>
+    </header>
 
-            <header class="header">
-            <h1>Instant Website Estimate</h1>
-            <p>Build your website and get an instant price in seconds.</p>
-            </header>
+    <div class="layout">
 
-            <div id="form"></div>
+      <div id="form"></div>
 
+      <div class="price-box">
+        <div class="price-label">Estimated total</div>
+        <h2 class="price-title" id="price">€0</h2>
 
-            <div class="price-box card sticky">
+        <div id="summary"></div>
 
-                <h2 class="price-title" id="price">Total: €0</h2>
+        <button onclick="copyQuote()" class="copy-btn">Copy quote</button>
 
-                <div id="summary"></div>
+        <div class="or-divider">or send it</div>
 
-                <button onclick="copyQuote()" class="copy-btn">Copy Quote</button>
-
-                <div class="lead-form">
-
-                    <input
-                        type="text"
-                        id="leadName"
-                        placeholder="Your name"
-                    >
-
-                    <input
-                        type="email"
-                        id="leadEmail"
-                        placeholder="Your email"
-                    >
-
-                    <button onclick="sendQuote()" class="send-btn">Send Quote</button>
-                </div>
-
-            </div>
-
+        <div class="lead-form">
+          <input type="text"  id="leadName"  placeholder="Your name" />
+          <input type="email" id="leadEmail" placeholder="Your email" />
+          <button onclick="sendQuote()" class="send-btn">Send quote →</button>
         </div>
+      </div>
 
-        <script src="config.js"></script>
-        <script src="app.js"></script>
+    </div>
 
-        <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  </div>
 
-        <script>
-            emailjs.init("FHv5TOrho2FzjuHXQ");
-        </script>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
 
-    </body>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script>
+    emailjs.init("FHv5TOrho2FzjuHXQ");
+  </script>
+
+</body>
 </html>
