@@ -9,62 +9,112 @@
 
 <body>
 
-  <div class="container">
+  <div class="app-shell">
 
-    <header class="header">
-      <div class="header-left">
-        <h1>Instant Price <span>Estimate</span></h1>
-        <p>Configure your project and get a live price in seconds.</p>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+      <div class="navbar-logo">
+        <div class="navbar-logo-icon"><span></span></div>
+        Service Estimator
       </div>
-      <div class="header-right">
-        <div class="header-badge">Live pricing</div>
-        <div class="footer-note">Prices are estimates and may vary based on project requirements.</div>
-      </div>
-    </header>
-
-    <div class="layout">
-
-      <div id="form"></div>
-
-      <div class="price-box">
-        <div class="price-label">Estimated total</div>
-        <h2 class="price-title" id="price">€0</h2>
-
-        <div id="summary"></div>
-
-        <button onclick="copyQuote()" class="copy-btn">Copy quote</button>
-
-        <div class="or-divider">or send it</div>
-
-        <div class="lead-form">
-          <input type="text"  id="leadName"  placeholder="Your name" />
-          <input type="email" id="leadEmail" placeholder="Your email" />
-          <button id="sendBtn" class="send-btn" onclick="sendQuote()">Send Quote</button>
+      <div class="navbar-right">
+        <div class="navbar-meta">
+          EUR <span>·</span> VAT included
         </div>
-        <div id="successMessage" style="
-            display:none;
-            margin-top:12px;
-            padding:14px;
-            border-radius:10px;
-            background:#ecfdf5;
-            border:1px solid #10b981;
-            color:#065f46;
-            font-weight:500;
-            ">
-            ✅ Quote sent successfully! Check your email.
+        <div class="live-badge">LIVE</div>
+      </div>
+    </nav>
+
+    <!-- MAIN -->
+    <div class="main-layout">
+
+      <!-- LEFT: form -->
+      <div class="left-panel">
+        <div class="hero-eyebrow">Instant Quote</div>
+        <h1 class="hero-headline">Price your project<br><em>in 30 seconds.</em></h1>
+        <p class="hero-sub">Pick what you need, see the price update live on the right. The number you see is the number you pay.</p>
+
+        <div id="form"></div>
+      </div>
+
+      <!-- RIGHT: summary -->
+      <div class="right-panel">
+        <div class="right-panel-inner">
+          <div class="summary-header">
+            <div class="summary-eyebrow">Your Quote</div>
+            <div class="summary-date" id="quoteDate"></div>
+          </div>
+          <div class="summary-title">Summary</div>
+          <div class="summary-id" id="quoteId"></div>
+
+          <hr class="dot-divider">
+
+          <div class="summary-lines" id="summary">
+            <div class="summary-line empty-note">No options selected yet.</div>
+          </div>
+
+          <hr class="dot-divider">
+
+          <div class="summary-math">
+            <div class="math-row"><span>Subtotal</span><span id="subtotal">€0</span></div>
+          </div>
+
+          <div class="total-block">
+            <div class="total-label">Total</div>
+            <div class="total-right">
+              <div class="total-amount" id="price">€0</div>
+              <div class="total-incl">Incl. VAT</div>
+            </div>
+          </div>
+
+          <div class="action-btns">
+            <button class="action-btn" onclick="copyQuote()">Copy</button>
+            <button class="action-btn" onclick="emailQuote()">Email</button>
+          </div>
+
+          <hr class="dot-divider">
+
+          <div class="send-section-label">Send to Inbox</div>
+
+          <div class="lead-form">
+            <input type="text"  id="leadName"  placeholder="Your name" />
+            <input type="email" id="leadEmail" placeholder="you@company.com" />
+          </div>
+
+          <button id="sendBtn" class="send-btn" onclick="sendQuote()">
+            Send quote
+            <span class="send-btn-arrow">→</span>
+          </button>
+
+          <div class="send-note">Valid for 30 days. No card required. We reply within one business day.</div>
+
+          <div id="successMessage">✅ Quote sent! Check your inbox.</div>
         </div>
       </div>
 
     </div>
 
+    <!-- FOOTER -->
+    <footer class="app-footer">
+      <span>© Service Estimator</span>
+      <span>Embeddable Widget · V1.0</span>
+    </footer>
+
   </div>
 
   <script src="config.js"></script>
   <script src="app.js"></script>
-
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script>
     emailjs.init("FHv5TOrho2FzjuHXQ");
+
+    // Set quote date & ID
+    const now = new Date();
+    document.getElementById("quoteDate").textContent =
+      now.toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' }).toUpperCase();
+    const qid = "Q-" + Math.random().toString(36).substring(2,6).toUpperCase() +
+                now.getDate().toString().padStart(2,"0") + (now.getMonth()+1).toString().padStart(2,"0");
+    document.getElementById("quoteId").textContent = qid;
   </script>
 
 </body>
