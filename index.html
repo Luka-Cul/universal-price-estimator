@@ -68,8 +68,38 @@
           </div>
 
           <div class="action-btns">
-            <button class="action-btn" onclick="copyQuote()">Copy</button>
-            <button class="action-btn" onclick="emailQuote()">Email</button>
+            <button class="action-btn" onclick="printQuote()">Download PDF</button>
+          </div>
+
+          <hr class="dot-divider">
+
+          <div class="timeline">
+            <div class="timeline-title">What happens next</div>
+            <div class="timeline-steps">
+              <div class="timeline-step">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                  <div class="timeline-step-label">Get your quote</div>
+                  <div class="timeline-step-desc">Fill in your details and hit send below</div>
+                </div>
+              </div>
+              <div class="timeline-connector"></div>
+              <div class="timeline-step">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                  <div class="timeline-step-label">We review</div>
+                  <div class="timeline-step-desc">We'll check the details and reach out within one business day</div>
+                </div>
+              </div>
+              <div class="timeline-connector"></div>
+              <div class="timeline-step">
+                <div class="timeline-dot active"></div>
+                <div class="timeline-content">
+                  <div class="timeline-step-label">Project starts</div>
+                  <div class="timeline-step-desc">Once confirmed, we kick off immediately</div>
+                </div>
+              </div>
+            </div>
           </div>
 
           <hr class="dot-divider">
@@ -112,7 +142,7 @@
     const now = new Date();
     document.getElementById("quoteDate").textContent =
       now.toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' }).toUpperCase();
-    const qid = "Q-" + Math.random().toString(36).substring(2,6).toUpperCase() +
+    const qid = "Q-" + Date.now().toString(36).toUpperCase() +
                 now.getDate().toString().padStart(2,"0") + (now.getMonth()+1).toString().padStart(2,"0");
     document.getElementById("quoteId").textContent = qid;
   </script>

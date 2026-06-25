@@ -74,9 +74,25 @@ function calculatePrice() {
   totalPrice = subtotal;
 
   document.getElementById("subtotal").textContent = `€${subtotal}`;
-  document.getElementById("price").textContent = `€${Math.round(subtotal)}`;
+  animatePrice(Math.round(subtotal));
 
   updateSummary(lineItems);
+}
+
+function animatePrice(target) {
+  const el = document.getElementById("price");
+  const start = parseInt(el.textContent.replace(/[^0-9]/g, "")) || 0;
+  if (start === target) return;
+  const duration = 400;
+  const startTime = performance.now();
+  function step(now) {
+    const progress = Math.min((now - startTime) / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const current = Math.round(start + (target - start) * eased);
+    el.textContent = `€${current}`;
+    if (progress < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
 }
 
 // ── SUMMARY PANEL ──────────────────────────────────────
@@ -212,6 +228,11 @@ function renderForm() {
   config.fields.filter(f => f.type === "slider").forEach(f => {
     state[f.key] = f.min;
   });
+
+  config.fields.filter(f => f.type === "radio").forEach(field => {
+    const defaultOption = field.options.find(option => option.default === true);
+    if (defaultOption) updateState(field.key, defaultOption.value);
+  });
 }
 
 // ── ACTIONS ────────────────────────────────────────────
@@ -239,26 +260,37 @@ function buildQuoteText() {
   return text;
 }
 
-function copyQuote() {
-  navigator.clipboard.writeText(buildQuoteText())
-    .then(() => alert("Quote copied to clipboard!"))
-    .catch(() => alert("Copy failed — please try manually."));
-}
-
-function emailQuote() {
-  const subject = encodeURIComponent("Your Price Estimate");
-  const body = encodeURIComponent(buildQuoteText());
-  window.open(`mailto:?subject=${subject}&body=${body}`);
+function printQuote() {
+  window.print();
 }
 
 function sendToSheet(name, email, total, summary) {
   fetch("https://script.google.com/macros/s/AKfycbyZVKT7dori_mrrXoMbWAgFon1b_QZibrqFU98LMv5jASOq1hNKrvWwEH0j2ZRRNAxg/exec", {
     method: "POST",
+    mode: "cors",
     body: JSON.stringify({ name, email, total, summary })
   })
   .then(res => res.text())
   .then(data => console.log("Sheet response:", data))
-  .catch(err => console.error("Sheet error:", err));
+  .catch(err => {
+    console.error("Sheet error:", err);
+    const toast = document.createElement("div");
+    toast.textContent = "Quote saved locally — sheet sync failed";
+    toast.style.position = "fixed";
+    toast.style.right = "20px";
+    toast.style.bottom = "20px";
+    toast.style.zIndex = "9999";
+    toast.style.background = "#2A1010";
+    toast.style.color = "#FFFFFF";
+    toast.style.border = "1px solid rgba(255,255,255,0.18)";
+    toast.style.borderRadius = "8px";
+    toast.style.padding = "12px 14px";
+    toast.style.fontSize = "13px";
+    toast.style.fontWeight = "700";
+    toast.style.boxShadow = "0 10px 30px rgba(0,0,0,0.25)";
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 4000);
+  });
 }
 
 function sendQuote() {

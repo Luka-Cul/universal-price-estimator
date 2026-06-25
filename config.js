@@ -8,7 +8,7 @@ const config = {
       label: "Choose a tier",
       type: "radio",
       options: [
-        { label: "Basic",    value: "basic",    price: 300,  desc: "Single deliverable, one round of feedback. · 5–7 days" },
+        { label: "Basic",    value: "basic",    price: 300,  desc: "Single deliverable, one round of feedback. · 5–7 days", default: true },
         { label: "Standard", value: "standard", price: 600,  desc: "Full scope, two rounds, source files. · 10–14 days" },
         { label: "Premium",  value: "premium",  price: 1200, desc: "End-to-end, unlimited rounds, priority slot. · 3–4 weeks" }
       ]
