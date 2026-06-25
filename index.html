@@ -1,151 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Price Estimator</title>
-  <link rel="stylesheet" href="style.css" />
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Price Estimator</title>
+	<link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
 
-  <div class="app-shell">
+	<div class="app-shell">
 
-    <!-- NAVBAR -->
-    <nav class="navbar">
-      <div class="navbar-logo">
-        <div class="navbar-logo-icon"><span></span></div>
-        Service Estimator
-      </div>
-      <div class="navbar-right">
-        <div class="navbar-meta">
-          EUR <span>·</span> VAT included
-        </div>
-        <div class="live-badge">LIVE</div>
-      </div>
-    </nav>
+		<!-- NAVBAR -->
+		<nav class="navbar">
+			<div class="navbar-logo">
+				<div class="navbar-logo-icon"><span></span></div>
+				Service Estimator
+			</div>
+			<div class="navbar-right">
+				<div class="navbar-meta">
+					EUR <span>·</span> VAT included
+				</div>
+				<div class="live-badge">LIVE</div>
+			</div>
+		</nav>
 
-    <!-- MAIN -->
-    <div class="main-layout">
+		<div class="main-layout">
 
-      <!-- LEFT: form -->
-      <div class="left-panel">
-        <div class="hero-eyebrow">Instant Quote</div>
-        <h1 class="hero-headline">Price your project<br><em>in 30 seconds.</em></h1>
-        <p class="hero-sub">Pick what you need, see the price update live on the right. The number you see is the number you pay.</p>
+			<!-- LEFT: form -->
+			<div class="left-panel">
+				<div class="hero-eyebrow">Instant Quote</div>
+				<h1 class="hero-headline">Price your project<br><em>in 30 seconds.</em></h1>
+				<p class="hero-sub">Pick what you need, see the price update live on the right. The number you see is the number you pay.</p>
 
-        <div id="form"></div>
-      </div>
+				<div id="form"></div>
+			</div>
 
-      <!-- RIGHT: summary -->
-      <div class="right-panel">
-        <div class="right-panel-inner">
-          <div class="summary-header">
-            <div class="summary-eyebrow">Your Quote</div>
-            <div class="summary-date" id="quoteDate"></div>
-          </div>
-          <div class="summary-title">Summary</div>
-          <div class="summary-id" id="quoteId"></div>
+			<!-- RIGHT: summary -->
+			<div class="right-panel">
+				<div class="right-panel-inner">
+					<div class="summary-header">
+						<div class="summary-eyebrow">Your Quote</div>
+						<div class="summary-date" id="quoteDate"></div>
+					</div>
+					<div class="summary-title">Summary</div>
+					<div class="summary-id" id="quoteId"></div>
 
-          <hr class="dot-divider">
+					<hr class="dot-divider">
 
-          <div class="summary-lines" id="summary">
-            <div class="summary-line empty-note">No options selected yet.</div>
-          </div>
+					<div class="summary-lines" id="summary">
+						<div class="summary-line empty-note">No options selected yet.</div>
+					</div>
 
-          <hr class="dot-divider">
+					<hr class="dot-divider">
 
-          <div class="summary-math">
-            <div class="math-row"><span>Subtotal</span><span id="subtotal">€0</span></div>
-          </div>
+					<div class="summary-math">
+						<div class="math-row"><span>Subtotal</span><span id="subtotal">€0</span></div>
+					</div>
 
-          <div class="total-block">
-            <div class="total-label">Total</div>
-            <div class="total-right">
-              <div class="total-amount" id="price">€0</div>
-              <div class="total-incl">Incl. VAT</div>
-            </div>
-          </div>
+					<div class="total-block">
+						<div class="total-label">Total</div>
+						<div class="total-right">
+							<div class="total-amount" id="price">€0</div>
+							<div class="total-incl">Incl. VAT</div>
+						</div>
+					</div>
 
-          <div class="action-btns">
-            <button class="action-btn" onclick="printQuote()">Download PDF</button>
-          </div>
+					<div class="action-btns">
+						<button class="action-btn" onclick="printQuote()">Download PDF</button>
+					</div>
 
-          <hr class="dot-divider">
+					<hr class="dot-divider">
 
-          <div class="timeline">
-            <div class="timeline-title">What happens next</div>
-            <div class="timeline-steps">
-              <div class="timeline-step">
-                <div class="timeline-dot"></div>
-                <div class="timeline-content">
-                  <div class="timeline-step-label">Get your quote</div>
-                  <div class="timeline-step-desc">Fill in your details and hit send below</div>
-                </div>
-              </div>
-              <div class="timeline-connector"></div>
-              <div class="timeline-step">
-                <div class="timeline-dot"></div>
-                <div class="timeline-content">
-                  <div class="timeline-step-label">We review</div>
-                  <div class="timeline-step-desc">We'll check the details and reach out within one business day</div>
-                </div>
-              </div>
-              <div class="timeline-connector"></div>
-              <div class="timeline-step">
-                <div class="timeline-dot active"></div>
-                <div class="timeline-content">
-                  <div class="timeline-step-label">Project starts</div>
-                  <div class="timeline-step-desc">Once confirmed, we kick off immediately</div>
-                </div>
-              </div>
-            </div>
-          </div>
+					<div class="timeline">
+						<div class="timeline-title">What happens next</div>
+						<div class="timeline-steps">
+							<div class="timeline-step">
+								<div class="timeline-dot"></div>
+								<div class="timeline-content">
+									<div class="timeline-step-label">Get your quote</div>
+									<div class="timeline-step-desc">Fill in your details and hit send below</div>
+								</div>
+							</div>
+							<div class="timeline-connector"></div>
+							<div class="timeline-step">
+								<div class="timeline-dot"></div>
+								<div class="timeline-content">
+									<div class="timeline-step-label">We review</div>
+									<div class="timeline-step-desc">We'll check the details and reach out within one business day</div>
+								</div>
+							</div>
+							<div class="timeline-connector"></div>
+							<div class="timeline-step">
+								<div class="timeline-dot active"></div>
+								<div class="timeline-content">
+									<div class="timeline-step-label">Project starts</div>
+									<div class="timeline-step-desc">Once confirmed, we kick off immediately</div>
+								</div>
+							</div>
+						</div>
+					</div>
 
-          <hr class="dot-divider">
+					<hr class="dot-divider">
 
-          <div class="send-section-label">Send to Inbox</div>
+					<div class="send-section-label">Send to Inbox</div>
 
-          <div class="lead-form">
-            <input type="text"  id="leadName"  placeholder="Your name" />
-            <input type="email" id="leadEmail" placeholder="you@company.com" />
-          </div>
+					<div class="lead-form">
+						<input type="text"  id="leadName"  placeholder="Your name" />
+						<input type="email" id="leadEmail" placeholder="you@company.com" />
+					</div>
 
-          <button id="sendBtn" class="send-btn" onclick="sendQuote()">
-            Send quote
-            <span class="send-btn-arrow">→</span>
-          </button>
+					<button id="sendBtn" class="send-btn" onclick="sendQuote()">
+						Send quote
+						<span class="send-btn-arrow">→</span>
+					</button>
 
-          <div class="send-note">Valid for 30 days. No card required. We reply within one business day.</div>
+					<div class="send-note">Valid for 30 days. No card required. We reply within one business day.</div>
 
-          <div id="successMessage">✅ Quote sent! Check your inbox.</div>
-        </div>
-      </div>
+					<div id="successMessage">✅ Quote sent! Check your inbox.</div>
+				</div>
+			</div>
 
-    </div>
+		</div>
 
-    <!-- FOOTER -->
-    <footer class="app-footer">
-      <span>© Service Estimator</span>
-      <span>Embeddable Widget · V1.0</span>
-    </footer>
+		<!-- FOOTER -->
+		<footer class="app-footer">
+			<span>© Service Estimator</span>
+			<span>Embeddable Widget · V1.0</span>
+		</footer>
 
-  </div>
+	</div>
 
-  <script src="config.js"></script>
-  <script src="app.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-  <script>
-    emailjs.init("FHv5TOrho2FzjuHXQ");
+	<script src="config.js"></script>
+	<script src="app.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+	<script>
+		emailjs.init("FHv5TOrho2FzjuHXQ");
 
-    // Set quote date & ID
-    const now = new Date();
-    document.getElementById("quoteDate").textContent =
-      now.toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' }).toUpperCase();
-    const qid = "Q-" + Date.now().toString(36).toUpperCase() +
-                now.getDate().toString().padStart(2,"0") + (now.getMonth()+1).toString().padStart(2,"0");
-    document.getElementById("quoteId").textContent = qid;
-  </script>
+		// Set quote date & ID
+		const now = new Date();
+		document.getElementById("quoteDate").textContent =
+			now.toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' }).toUpperCase();
+		const qid = "Q-" + Date.now().toString(36).toUpperCase() +
+								now.getDate().toString().padStart(2,"0") + (now.getMonth()+1).toString().padStart(2,"0");
+		document.getElementById("quoteId").textContent = qid;
+	</script>
 
 </body>
 </html>
